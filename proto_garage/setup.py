@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'car_detection = proto_garage.car_detection:main',
             'read_plate = proto_garage.read_plate:main',
+            'tof_node = proto_garage.ToFNode:main',
         ],
     },
 )
