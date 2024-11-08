@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'car_detection = proto_garage.car_detection:main',
+            'tof_node = proto_garage.ToFNode:main',
         ],
     },
 )
