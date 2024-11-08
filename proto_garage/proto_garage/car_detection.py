@@ -33,11 +33,6 @@ class car_detection(Node):
 
             self.publisher_car_detection.publish(image_message)
 
-            #publie sur le topic une image
-            #alume les leds
-            #attend x secondes
-            #eteint les leds
-
             
 
 

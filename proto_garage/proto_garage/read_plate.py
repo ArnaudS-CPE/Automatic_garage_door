@@ -7,7 +7,7 @@ from std_msgs.msg import String
 import cv2
 from cv_bridge import CvBridge
 
-import easyocr
+# import easyocr
 
 
 class plate_reader(Node):
@@ -22,25 +22,19 @@ class plate_reader(Node):
 
         self.bridge = CvBridge()
 
-        reader = easyocr.Reader(['en'])
+        # reader = easyocr.Reader(['en'])
 
 
 
     def image_callback(self, msg):
 
-        frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        # Convert the image message to OpenCV format
+        frame = self.bridge.imgmsg_to_cv2(msg)
+        cv2.imshow('image',frame)
+        cv2.waitKey(0)
 
 
-
-
-        if self.flight_mode == 2:
-            # Convert the image message to OpenCV format
-            frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-            cv2.imshow('image',frame)
-            cv2.waitKey(0)
-
-
-            self.publisher_control.publish(self.twist)
+        #self.publisher_control.publish(self.twist)
             
 
 def main(args=None):
