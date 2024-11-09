@@ -6,22 +6,25 @@ class DoorController(Node):
     def __init__(self):
         super().__init__('door_controller')
         
-        # Publisher to send open/close commands to control the door
-        self.command_publisher = self.create_publisher(String, 'door_command', 10)
-        
-        # Subscriber to receive feedback on the door's current state
-        self.state_subscriber = self.create_subscription(String, 'door_state', self.state_callback, 10)
-        
-        # Subscriber to receive commands
-        self.command_subscriber = self.create_subscription(String, 'door_control_command', self.command_callback, 10)
         
         # Initialize the door's state
-        self.door_state = 'CLOSED'  # Possible states: CLOSED, OPENING, OPEN, CLOSING
+        self.door_state = 'CLOSED'  # Possible states: CLOSED, OPEN
 
-    def state_callback(self, msg):
-        """Callback to update the door's state based on feedback messages."""
-        self.door_state = msg.data
-        self.get_logger().info(f"Door state updated to: {self.door_state}")
+        # Create a publisher for the door state
+        self.state_publisher = self.create_publisher(String, 'door_state', 10)
+        
+        # Set a timer to publish the door state at 1Hz
+        self.timer = self.create_timer(0.5, self.publish_door_state)
+
+        # Subscriber to receive commands
+        self.command_subscriber = self.create_subscription(String, 'door_control_command', self.command_callback, 10)
+
+    def publish_door_state(self):
+        # Create and publish the door state message
+        msg = String()
+        msg.data = self.door_state
+        self.state_publisher.publish(msg)
+        
 
     def command_callback(self, msg):
         """Callback to receive open/close commands and execute based on the state machine logic."""
@@ -33,8 +36,7 @@ class DoorController(Node):
         """Send a command to open the door if the state allows it."""
         if self.door_state == 'CLOSED':
             self.get_logger().info("Sending command to open the door.")
-            self.door_state = 'OPENING'
-            self.command_publisher.publish(String(data="open"))
+            self.door_state = 'OPEN'
         else:
             self.get_logger().info("Door is already open or opening, no action taken.")
 
@@ -42,8 +44,7 @@ class DoorController(Node):
         """Send a command to close the door if the state allows it."""
         if self.door_state == 'OPEN':
             self.get_logger().info("Sending command to close the door.")
-            self.door_state = 'CLOSING'
-            self.command_publisher.publish(String(data="close"))
+            self.door_state = 'CLOSED'
         else:
             self.get_logger().info("Door is already closed or closing, no action taken.")
 
@@ -59,10 +60,8 @@ class DoorController(Node):
 def main(args=None):
     rclpy.init(args=args)
     door_controller = DoorController()
-
     # Spin the node to keep it alive and responsive to incoming commands
     rclpy.spin(door_controller)
-
     # Cleanup
     door_controller.destroy_node()
     rclpy.shutdown()

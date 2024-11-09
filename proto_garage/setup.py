@@ -24,6 +24,7 @@ setup(
             'read_plate = proto_garage.read_plate:main',
             'tof_node = proto_garage.ToFNode:main',
             'door_controller = proto_garage.door_controller:main',
+            'plate_checker = proto_garage.plate_checker:main',
         ],
     },
 )
