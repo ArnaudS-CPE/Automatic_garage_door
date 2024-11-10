@@ -2,6 +2,8 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 import json
+from ament_index_python.packages import get_package_share_directory
+import os
 
 class PlateChecker(Node):
     def __init__(self):
@@ -18,8 +20,12 @@ class PlateChecker(Node):
             10
         )
 
-        # Load allowed plates from the JSON file
-        self.allowed_plates = self.load_allowed_plates('/home/tototime/ros2_ws/src/Automatic_garage_door/proto_garage/proto_garage/plate_list.json')
+        # Dynamically retrieve the installed path to the 'database' folder
+        package_path = get_package_share_directory('proto_garage')
+        database_path = os.path.join(package_path, 'database')
+        
+        json_file_path = os.path.join(database_path, 'plate_list.json')
+        self.allowed_plates = self.load_allowed_plates(json_file_path)
 
     def load_allowed_plates(self, filename):
         """Load allowed plates from the JSON file with the structure specified."""

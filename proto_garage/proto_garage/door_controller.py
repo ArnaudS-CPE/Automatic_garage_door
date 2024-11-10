@@ -6,21 +6,15 @@ class DoorController(Node):
     def __init__(self):
         super().__init__('door_controller')
         
-        
-        # Initialize the door's state
         self.door_state = 'CLOSED'  # Possible states: CLOSED, OPEN
 
-        # Create a publisher for the door state
         self.state_publisher = self.create_publisher(String, 'door_state', 10)
         
-        # Set a timer to publish the door state at 1Hz
         self.timer = self.create_timer(0.5, self.publish_door_state)
 
-        # Subscriber to receive commands
         self.command_subscriber = self.create_subscription(String, 'door_control_command', self.command_callback, 10)
 
     def publish_door_state(self):
-        # Create and publish the door state message
         msg = String()
         msg.data = self.door_state
         self.state_publisher.publish(msg)
@@ -60,9 +54,7 @@ class DoorController(Node):
 def main(args=None):
     rclpy.init(args=args)
     door_controller = DoorController()
-    # Spin the node to keep it alive and responsive to incoming commands
     rclpy.spin(door_controller)
-    # Cleanup
     door_controller.destroy_node()
     rclpy.shutdown()
 
