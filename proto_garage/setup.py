@@ -1,4 +1,6 @@
 from setuptools import find_packages, setup
+import os
+from glob import glob
 
 package_name = 'proto_garage'
 
@@ -9,6 +11,8 @@ setup(
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
+        (os.path.join('share', package_name, 'database'), glob('database/*')),
+        
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
@@ -23,6 +27,8 @@ setup(
             'car_detection = proto_garage.car_detection:main',
             'read_plate = proto_garage.read_plate:main',
             'tof_node = proto_garage.ToFNode:main',
+            'door_controller = proto_garage.door_controller:main',
+            'plate_checker = proto_garage.plate_checker:main',
         ],
     },
 )
