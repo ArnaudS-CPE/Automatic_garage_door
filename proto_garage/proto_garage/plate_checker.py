@@ -15,7 +15,7 @@ class PlateChecker(Node):
         # Subscriber to receive license plate numbers
         self.plate_subscriber = self.create_subscription(
             String,
-            'license_plate_input',
+            'plate',
             self.plate_callback,
             10
         )
