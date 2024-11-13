@@ -8,6 +8,7 @@ from sensor_msgs.msg import Image
 import cv2
 from cv_bridge import CvBridge
 import serial
+import time
 
 
 class car_detection(Node):
@@ -31,7 +32,9 @@ class car_detection(Node):
                 data = self.ser.read().decode('utf-8')  # Read one character and decode it
             if data == 'a':
                 cam = cv2.VideoCapture(0)
+                time.sleep(1)
                 result, image = cam.read()
+                time.sleep(1)
 
                 image_message = self.bridge.cv2_to_imgmsg(image, "passthrough")
 
