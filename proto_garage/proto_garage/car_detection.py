@@ -7,6 +7,7 @@ from sensor_msgs.msg import Image
 #import RPi.GPIO as GPIO
 import cv2
 from cv_bridge import CvBridge
+import serial
 
 
 class car_detection(Node):
@@ -14,26 +15,31 @@ class car_detection(Node):
     def __init__(self):
         super().__init__('minimal_publisher')
         self.publisher_car_detection = self.create_publisher(Image, 'car_detected', 10)
-        timer_period = 0.5  # seconds
+        timer_period = 0.3
 
         self.bridge = CvBridge()
 
-        #init GPIO
-
+        self.ser = serial.Serial('/dev/ttyACM0', 9600) #change with correct port
 
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def timer_callback(self):
 
-        if True: 
-            cam = cv2.VideoCapture(0)
-            result, image = cam.read()
+        while True:
+            data = 'z'
+            if self.ser.in_waiting > 0:  # Check if there's data in the buffer
+                data = self.ser.read().decode('utf-8')  # Read one character and decode it
+            if data == 'a':
+                cam = cv2.VideoCapture(0)
+                result, image = cam.read()
 
-            image_message = self.bridge.cv2_to_imgmsg(image, "passthrough")
+                image_message = self.bridge.cv2_to_imgmsg(image, "passthrough")
 
-            self.publisher_car_detection.publish(image_message)
+                self.publisher_car_detection.publish(image_message)
 
-            
+                break
+
+                
 
 
 def main(args=None):
