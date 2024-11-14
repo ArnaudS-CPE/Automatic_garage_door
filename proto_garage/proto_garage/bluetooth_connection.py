@@ -26,7 +26,6 @@ class BluetoothManager(Node):
         self.listen_for_connections()
 
     def listen_for_connections(self):
-        while True:
             self.server_sock.listen(1)
             self.get_logger().info("Waiting for Bluetooth connection...")
             client_sock, address = self.server_sock.accept()
