@@ -21,13 +21,13 @@ class BluetoothManager(Node):
         # Bluetooth setup
         self.server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         self.server_sock.bind(("", 22))
+        self.server_sock.listen(1)
 
         # Start listening for Bluetooth connections
         self.listen_for_connections()
 
     def listen_for_connections(self):
         while True:
-            self.server_sock.listen(1)
             self.get_logger().info("Waiting for Bluetooth connection...")
             client_sock, address = self.server_sock.accept()
             self.get_logger().info(f"Connection established with: {address}")
@@ -41,10 +41,11 @@ class BluetoothManager(Node):
                     if recvdata == "open":
                         status = self.send_open_command()
                         
-
+                    if recvdata == "close":
+                        status = self.send_close_command()
+                        
                     # Check for reset command to wait for a new connection
                     elif recvdata == "0":
-                        client_sock.close()
                         self.get_logger().info("Resetting connection.")
                         break
 
@@ -65,7 +66,7 @@ class BluetoothManager(Node):
             except Exception as e:
                 self.get_logger().error(f"Error: {e}")
             finally:
-                # client_sock.close()
+                client_sock.close()
                 self.get_logger().info("Connection closed.")
 
     def send_open_command(self):
@@ -78,6 +79,15 @@ class BluetoothManager(Node):
             self.get_logger().error(f"Error: {e}")
             return "invalid_command"
 
+    def send_close_command(self):
+        """Publishes an close command to the door control topic."""
+        try:
+            self.command_publisher.publish(String(data="close"))
+            self.get_logger().info("Sent close command to door controller.")
+            return "door_close"
+        except Exception as e:
+            self.get_logger().error(f"Error: {e}")
+            return "invalid_command"
 
     def modify_plate_in_json(self, command, plate_number):
         # Check if the JSON file exists
