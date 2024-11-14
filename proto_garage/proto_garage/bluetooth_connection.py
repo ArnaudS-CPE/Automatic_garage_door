@@ -39,7 +39,7 @@ class BluetoothManager(Node):
 
                     # Check for "open" command to publish to the door controller
                     if recvdata == "open":
-                        self.send_open_command()
+                        status = self.send_open_command()
                         
 
                     # Check for reset command to wait for a new connection
@@ -69,8 +69,14 @@ class BluetoothManager(Node):
 
     def send_open_command(self):
         """Publishes an open command to the door control topic."""
-        self.command_publisher.publish(String(data="open"))
-        self.get_logger().info("Sent open command to door controller.")
+        try:
+            self.command_publisher.publish(String(data="open"))
+            self.get_logger().info("Sent open command to door controller.")
+            return "door_open"
+        except Exception as e:
+            self.get_logger().error(f"Error: {e}")
+            return "invalid_command"
+
 
     def modify_plate_in_json(self, command, plate_number):
         # Check if the JSON file exists
