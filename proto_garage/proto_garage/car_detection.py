@@ -31,7 +31,7 @@ class car_detection(Node):
             if self.ser.in_waiting > 0:  # Check if there's data in the buffer
                 data = self.ser.read().decode('utf-8')  # Read one character and decode it
             if data == 'a':
-                cam = cv2.VideoCapture(0)
+                cam = cv2.VideoCapture(2)
                 time.sleep(1)
                 result, image = cam.read()
                 time.sleep(1)
