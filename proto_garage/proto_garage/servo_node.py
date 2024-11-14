@@ -16,12 +16,12 @@ class ServoNode(Node):
 
 
     def action_porte(self,msg):
-        msg=Empty()
-        if msg=="open":
+        msgtof=Empty()
+        if msg.data=="open":
             print('Ouverture de la porte')
             self.servo.angle = 90
-            self.car_coming_in.publish(msg)
-        elif msg=="close":
+            self.car_coming_in.publish(msgtof)
+        elif msg.data=="close":
             print('Fermeture de la porte')
             self.servo.angle = 0
 
