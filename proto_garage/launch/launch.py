@@ -39,5 +39,12 @@ def generate_launch_description():
             executable='plate_checker',
             name='plate_checker',
             output='screen'
+        ),
+        # Node for bluethooth
+        Node(
+            package='proto_garage',
+            executable='bluetooth_connection',
+            name='bluetooth_connection',
+            output='screen'
         )
     ])
