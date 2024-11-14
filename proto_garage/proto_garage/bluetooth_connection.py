@@ -16,7 +16,7 @@ class BluetoothManager(Node):
         # Load JSON file path dynamically
         package_path = get_package_share_directory('proto_garage')
         database_path = os.path.join(package_path, 'database')
-        self.json_file_path = os.path.join(database_path, 'plate_list.json')
+        self.json_file_path = "/home/prototype/ws_proto/src/Automatic_garage_door/proto_garage/database/plate_list.json"
 
         # Bluetooth setup
         self.server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
