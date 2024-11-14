@@ -31,6 +31,7 @@ setup(
             'door_controller = proto_garage.door_controller:main',
             'plate_checker = proto_garage.plate_checker:main',
             'servo_node = proto_garage.servo_node:main',
+            'bluetooth_connection=proto_garage.bluetooth_connection:main'
         ],
     },
 )
