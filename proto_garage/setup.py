@@ -14,6 +14,7 @@ setup(
         (os.path.join('share', package_name, 'database'), glob('database/*')),
         
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -26,10 +27,10 @@ setup(
         'console_scripts': [
             'car_detection = proto_garage.car_detection:main',
             'read_plate = proto_garage.read_plate:main',
-            'tof_node = proto_garage.ToFNode:main',
+            'tof_node = proto_garage.tof_node:main',
             'door_controller = proto_garage.door_controller:main',
             'plate_checker = proto_garage.plate_checker:main',
-            'servonode = proto_garage.ServoNode:main',
+            'servo_node = proto_garage.servo_node:main',
         ],
     },
 )
