@@ -39,7 +39,8 @@ class BluetoothManager(Node):
 
                     # Check for "open" command to publish to the door controller
                     if recvdata == "open":
-                        self.send_open_command()
+                        #self.send_open_command()
+                        pass
 
                     # Check for reset command to wait for a new connection
                     elif recvdata == "0":
