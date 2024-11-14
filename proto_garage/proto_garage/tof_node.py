@@ -20,11 +20,11 @@ class ToFNode(Node):
         parked=False
         while(parked==False):
             ser = serial.Serial(port='/dev/ttyUSB0',baudrate=9600)
-            print('Voiture detectée')
+            # print('Voiture detectée')
             ser.write(str.encode('90'))
             value= ser.read(1)
             if(value!=None):
-                print("Véhicule dans le garage")
+                # print("Car in the garage")
                 self.car_parked.publish(self.msg)
                 parked=True
 
