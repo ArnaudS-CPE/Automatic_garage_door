@@ -4,7 +4,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Empty
 import serial
 from gpiozero import AngularServo
-from time import sleep
+import time
 from std_msgs.msg import String
 
 class ServoNode(Node):
@@ -20,11 +20,15 @@ class ServoNode(Node):
         msgtof=Empty()
         if msg.data=="open":
             self.get_logger().info('Door opening')
-            self.servo.angle = 0
+            for i in range(10):
+                time.sleep(0.5)
+                self.servo.angle = 9*i
             self.car_coming_in.publish(msgtof)
         elif msg.data=="close":
             self.get_logger().info('Closing the door')
-            self.servo.angle = 90
+            for i in range(10):
+                time.sleep(0.5)
+                self.servo.angle = 90-9*i
 
 def main(args=None):
     rclpy.init(args=args)
