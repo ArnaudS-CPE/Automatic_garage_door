@@ -51,6 +51,8 @@ class plate_reader(Node):
             plate_text = plate_text.replace(",", "")
             plate_text = plate_text.replace(";", "")
             plate_text = plate_text.replace(":", "")
+            plate_text = plate_text.replace(".", "")
+            plate_text = plate_text[2:5]
             plate.data = plate_text
             self.publisher_plate.publish(plate)
             
