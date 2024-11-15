@@ -44,9 +44,10 @@ class PlateChecker(Node):
     def plate_callback(self, msg):
         """Callback to process received license plate number and publish command if allowed."""
         plate_number = str(msg.data)
-        if plate_number in self.allowed_plates:
-            self.get_logger().info(f"Plate {plate_number} is allowed. Sending open command.")
-            self.command_publisher.publish(String(data="open"))
+        for plate in self.allowed_plates:
+            if plate_number in plate :
+                self.get_logger().info(f"Plate {plate} is allowed. Sending open command.")
+                self.command_publisher.publish(String(data="open"))
         else:
             self.get_logger().info(f"Plate {plate_number} is NOT allowed. No action taken.")
 
