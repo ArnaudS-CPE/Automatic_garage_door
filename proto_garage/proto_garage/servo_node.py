@@ -4,17 +4,13 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Empty
 import serial
 from gpiozero import AngularServo
-import gpiozero
 import time
 from std_msgs.msg import String
 
-from gpiozero.pins.pigpio import PiGPIOFactory
 
 class ServoNode(Node):
     def __init__(self):
         super().__init__('servo_node')
-
-        gpiozero.Device.pin_factory = PiGPIOFactory('127.0.0.1')
         self.command_subscriber = self.create_subscription(String, 'door_control_command', self.action_porte ,10)
         self.car_coming_in = self.create_publisher(Empty, 'car_coming_in', 10)
         self.servo = AngularServo(18, min_pulse_width=0.0006, max_pulse_width=0.0023)
