@@ -38,6 +38,7 @@ void car_detected (){
   delay(3000);
   digitalWrite(pinLED1, LOW);
   digitalWrite(pinLED2, LOW);
+  delay(20000);
 }
 
 
