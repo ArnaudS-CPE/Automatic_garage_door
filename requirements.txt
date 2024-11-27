@@ -1,0 +1,5 @@
+json
+serial
+easyocr
+gpiozero
+opencv-python
