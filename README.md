@@ -2,13 +2,52 @@
 
 ## Module : Capteurs/actionneurs et prototypes
 
-Ce projet implémente un système de gestion automatique de porte de garage basé sur ROS2 et Bluetooth. Il permet de détecter un véhicule, lire sa plaque d'immatriculation, et contrôler l'ouverture/fermeture de la porte de manière automatisée. Le système utilise plusieurs nœuds ROS2 pour gérer la détection de voiture, la lecture de plaque, et la commande des servos pour l’ouverture de la porte.
+Ce projet implémente un système de gestion automatique de porte de garage basé sur ROS2 et Bluetooth. Il permet de détecter un véhicule, lire sa plaque d'immatriculation, et contrôler l'ouverture/fermeture de la porte de manière automatisée. Le système utilise plusieurs nœuds ROS2 pour gérer la détection de voiture, la lecture de plaque, et la commande des servos pour l’ouverture de la porte. 
+
+Présentation PowerPoint disponible [ici](img/Presentation.pptx) 
+
+## Table des Matières
+
+- [Porte de garage automatique](#porte-de-garage-automatique)
+  - [Module : Capteurs/actionneurs et prototypes](#module--capteursactionneurs-et-prototypes)
+  - [Table des Matières](#table-des-matières)
+  - [Auteurs](#auteurs)
+  - [Application Android](#application-android)
+  - [Structure des Nœuds](#structure-des-nœuds)
+    - [1. BluetoothManager](#1-bluetoothmanager)
+    - [2. car\_detection](#2-car_detection)
+    - [3. ServoNode](#3-servonode)
+    - [4. ToFNode](#4-tofnode)
+    - [5. plate\_reader](#5-plate_reader)
+    - [Graph](#graph)
+  - [Installation](#installation)
+    - [Prérequis](#prérequis)
+    - [Dépendances](#dépendances)
+    - [Exécution](#exécution)
+  - [Fichiers Principaux](#fichiers-principaux)
+  - [Utilisation](#utilisation)
+  - [Vidéo](#vidéo)
+  - [Liens utiles](#liens-utiles)
 
 ## Auteurs
 
-- Théotime PERRICHET
-- Tom RECHE
-- Arnaud SIBENALER
+- [Théotime PERRICHET](https://github.com/TheoTime01)
+- [Tom RECHE](https://github.com/TomRecheEln)
+- [Arnaud SIBENALER](https://github.com/ArnaudS-CPE)
+
+## Application Android
+
+![img](/img/telephone-app.png)
+
+Cette [application](app/p9B3i_enviar_recibirRaspBerry3.aia) a été développée sur [App Inventor](https://appinventor.mit.edu/).
+
+**Utilisation**
+
+ - Se connecter en Bluetooth du téléphone/tablette à l'ordinateur.
+ - Cliquer sur le boutton *Start Connect*
+- Cliquer sur *Open door* pour ouvrir la porte du garage et *Close door* pour la fermer
+ - Il est possible de supprimer et de rajouter des plaques d'immatriculation a la base de données json
+ - Cliquer sur *Stop Connect* pour déconnecter l'application
 
 ## Structure des Nœuds
 
@@ -40,14 +79,28 @@ Ce nœud utilise un capteur ToF pour détecter si une voiture est complètement 
 
 Ce nœud utilise l'OCR pour lire la plaque d'immatriculation d'une voiture détectée. Il reçoit les images du topic `car_detected`, extrait le texte et publie la plaque sur le topic `plate` si une plaque valide est détectée.
 
+### Graph
+
+![img](/img/graph.png)
+
 ## Installation
 
 ### Prérequis
 
-1. **ROS2** - Installez ROS2 (Humble ou une autre distribution compatible).
+1. **ROS2** - Installez ROS2 Humble.
 2. **Python 3.x** - Assurez-vous d'avoir Python 3.x installé.
 
 ### Dépendances
+
+**Dépendances Bluetooth**
+
+```bash
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install bluetooth
+sudo apt-get install bluez
+sudo apt-get install python-bluez
+```
 
 Installez les dépendances Python répertoriées dans `requirements.txt` :
 
@@ -59,15 +112,13 @@ pip install -r requirements.txt
 
 ### Exécution
 
-1. **Lancer ROS2** :
-   Lancez le `ros2 daemon` :
+**Lancer launch file ROS2** :
+   Lancez le `launch file` :
 
    ```bash
-   ros2 daemon start
+   sudo sdptool add --channel=22 SP
+   ros2 launch proto_garage launch.py
    ```
-
-2. **Lancer les nœuds** :
-   - Vous pouvez démarrer les nœuds individuellement ou utiliser un fichier de lancement ROS2 pour démarrer plusieurs nœuds en même temps.
 
 ## Fichiers Principaux
 
@@ -85,9 +136,12 @@ Une fois tous les nœuds en cours d'exécution, le système est prêt à gérer 
 2. Si l'accès est autorisé, la porte est ouverte.
 3. Le capteur ToF vérifie si la voiture est bien garée et ferme la porte après un délai.
 
+## Vidéo
+
+![link]()
 
 ## Liens utiles
 
-https://community.appinventor.mit.edu/t/raspberry-pi-bluetooth-send-receive/59846/4
+<https://community.appinventor.mit.edu/t/raspberry-pi-bluetooth-send-receive/59846/4>
 
-https://stackoverflow.com/questions/71341540/how-to-fix-installation-error-by-pybluez-error-on-subprocess
+<https://stackoverflow.com/questions/71341540/how-to-fix-installation-error-by-pybluez-error-on-subprocess>
