@@ -6,14 +6,19 @@ import serial
 from gpiozero import AngularServo
 import time
 from std_msgs.msg import String
+from gpiozero.pins.pigpio import PiGPIOFactory
+from gpiozero import AngularServo
+from time import sleep
+
 
 
 class ServoNode(Node):
     def __init__(self):
         super().__init__('servo_node')
+        factory = PiGPIOFactory()
         self.command_subscriber = self.create_subscription(String, 'door_control_command', self.action_porte ,10)
         self.car_coming_in = self.create_publisher(Empty, 'car_coming_in', 10)
-        self.servo = AngularServo(18, min_pulse_width=0.0006, max_pulse_width=0.0023)
+        self.servo = AngularServo(18, min_pulse_width=0.0006, max_pulse_width=0.0023,pin_factory=factory)
         self.servo.angle=90
 
     def action_porte(self,msg):
