@@ -41,10 +41,16 @@ Pour tester notre prototype, nous avons réalisé une maquette à échelle rédu
 
 ![img](/img/maquette.JPG)
 
+
+La maquette est composée d'un boitier contenant un télémètre infrarouge Sharp et deux leds, connectés à une Arduino, permettant de détecter un véhicule, et d'éclairer sa plaque d'immatriculation.
+Lorsque qu'un voiture est détectée, l'Arduino envoie un message vers une Raspberry Pi 4, qui déclenche la capture d'une image de la plaque avec une webcam. La Raspberru Pi traite l'image et ouvre ou non la porte. 
+La porte s'ouvre avec un servomoteur directement connecté à la Raspberry Pi.
+Un capteur temps de vol détecte la distance entre la voiture et le mur, et une ESP32 équipée d'un écran affiche cette distance et déclenche la fermeture de la porte lorsque la voiture est bien garée.
+Une application sur une tablette Android connectée en Bluetooth à la Raspberry Pi permet de contrôler manuellement la porte et d'ajouter ou supprimer des plaques d'immatriculation de la base de données.
+
+Chaque élément du système (à l'exception du servomoteur) est connecté à la Raspberry Pi en USB, pour avoir l'alimentation et le transfert de données dans un seul cable.
+
 ![img](/img/schema.png)
-
-Un télémètre infrarouge Sharp détecte la voiture lorsqu'elle s'approche de la porte. Quand la voiture est détectée, des leds s'allument pour éclairer la plaque, et l'Arduino envoir un message à la raspberry pi.
-
 
 
 ### Impressions 3D réalisées :
