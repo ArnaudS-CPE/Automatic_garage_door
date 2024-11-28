@@ -80,6 +80,10 @@ Cette [application](app/p9B3i_enviar_recibirRaspBerry3.aia) a été développée
 
 ## Structure des Nœuds
 
+### Graph
+
+![img](/img/graph.png)
+
 ### 1. BluetoothManager
 
 Ce nœud gère la connexion Bluetooth avec un appareil externe (ex: un téléphone) pour recevoir des commandes. Il peut ajouter ou supprimer une plaque d'immatriculation de la liste autorisée via un fichier JSON, selon les instructions reçues :
@@ -90,14 +94,14 @@ Ce nœud gère la connexion Bluetooth avec un appareil externe (ex: un télépho
 
 ### 2. car_detection
 
-Ce nœud utilise une caméra pour détecter les voitures en capturant des images lorsque le signal est reçu via un capteur connecté via un port série. Si une voiture est détectée (signal `'a'` reçu), une image est capturée et publiée sur le topic `car_detected`.
+Lorsqu'un caractère est reçu sur un port série (i.e. lorsqu'une voiture est détectée devant la porte), le nœud capture une image de la plaque d'immatriculation avec une webcam, et publie l'image sur le topic `car_detected`.
 
 ### 3. ServoNode
 
 Ce nœud contrôle les servos pour ouvrir et fermer la porte. Il souscrit au topic `door_control_command` et effectue l’action suivante :
-
 - `open` : ouvre la porte en ajustant les angles des servos.
 - `close` : ferme la porte.
+
 Ce nœud publie également un message sur `car_coming_in` lorsque la porte est ouverte, indiquant l'arrivée d'un véhicule.
 
 ### 4. ToFNode
@@ -106,11 +110,11 @@ Ce nœud utilise un capteur ToF pour détecter si une voiture est complètement 
 
 ### 5. plate_reader
 
-Ce nœud utilise l'OCR pour lire la plaque d'immatriculation d'une voiture détectée. Il reçoit les images du topic `car_detected`, extrait le texte et publie la plaque sur le topic `plate` si une plaque valide est détectée.
+Ce nœud utilise l'OCR (avec la bibliothèque Python _EasyOCR_, et un modèle pré-entraîné fourni) pour lire la plaque d'immatriculation d'une voiture détectée. Il reçoit les images du topic `car_detected`, en extrait le texte, le traite pour s'assurer qu'il s'agit bien d'un plaque d'immatriculation, et publie la plaque sur le topic `plate` si une plaque valide est détectée.
 
-### Graph
+### 6. plate_checker
 
-![img](/img/graph.png)
+Ce nœud reçoie les plaques d'immatriculation lues sur le topic `plate`, et vérifie si elle est présente dans un fichier JSON contenat les plaques autorisées à entrer. Si la plaque est autorisée, le nœud envoie un message pour ouvrir la porte sur le topic `door_control_command`.
 
 ## Installation
 
@@ -142,12 +146,14 @@ pip install -r requirements.txt
 ### Exécution
 
 **Lancer launch file ROS2** :
-   Lancez le `launch file` :
+   Lancez manuellement le `launch file` :
 
    ```bash
    sudo sdptool add --channel=22 SP
    ros2 launch proto_garage launch.py
    ```
+
+  On a configuré la Rapsberry Pi pour que le `launch file` se lance automatiquement à son lancement.
 
 ## Fichiers Principaux
 
@@ -156,6 +162,7 @@ pip install -r requirements.txt
 - **`servo_node.py`** : Contrôle l'ouverture et la fermeture de la porte du garage.
 - **`tof_node.py`** : Vérifie la présence du véhicule dans le garage.
 - **`plate_reader.py`** : Lit et extrait la plaque d'immatriculation d'une image via OCR.
+- **`plate_checker.py`** : Vérifie si les plaques lues sont autorisées ou non.
 
 ## Utilisation
 
