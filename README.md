@@ -43,6 +43,7 @@ Pour tester notre prototype, nous avons réalisé une maquette à échelle rédu
 
 ![img](/img/schema.png)
 
+Un télémètre infrarouge Sharp détecte la voiture lorsqu'elle s'approche de la porte. Quand la voiture est détectée, des leds s'allument pour éclairer la plaque, et l'Arduino envoir un message à la raspberry pi.
 
 
 
@@ -55,7 +56,6 @@ Pour tester notre prototype, nous avons réalisé une maquette à échelle rédu
 
 - Charnières de la porte (modèle trouvé sur Internet)
 ![img](/img/charniere.JPG)
-
 
 
 ## Application Android
