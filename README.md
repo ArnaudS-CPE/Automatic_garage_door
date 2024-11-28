@@ -2,7 +2,7 @@
 
 ## Module : Capteurs/actionneurs et prototypes
 
-Ce projet implémente un système de gestion automatique de porte de garage basé sur ROS2 et Bluetooth. Il permet de détecter un véhicule, lire sa plaque d'immatriculation, et contrôler l'ouverture/fermeture de la porte de manière automatisée. Le système utilise plusieurs nœuds ROS2 pour gérer la détection de voiture, la lecture de plaque, et la commande des servos pour l’ouverture de la porte. 
+Ce projet implémente un système de gestion automatique de porte de garage basé sur ROS2 et une connection Bluetooth. Il permet de détecter un véhicule, lire sa plaque d'immatriculation, et contrôler l'ouverture/fermeture de la porte de manière automatisée. Le système utilise plusieurs nœuds ROS2 pour gérer la détection de voiture, la lecture de plaque, et la commande du servomoteur pour l’ouverture de la porte. 
 
 Présentation PowerPoint disponible [ici](img/Presentation.pptx) 
 
@@ -35,6 +35,29 @@ Présentation PowerPoint disponible [ici](img/Presentation.pptx)
 - [Tom RECHE](https://github.com/TomRecheEln)
 - [Arnaud SIBENALER](https://github.com/ArnaudS-CPE)
 
+## Maquette
+
+Pour tester notre prototype, nous avons réalisé une maquette à échelle réduite. 
+
+![img](/img/maquette.JPG)
+
+![img](/img/schema.png)
+
+
+
+
+### Impressions 3D réalisées :
+- Boitier en 2 pièces contenant le télémètre Sharp et les leds
+![img](/img/boitier.JPG)
+
+- Boitier de fixation du servomoteur
+![img](/img/servo.JPG)
+
+- Charnières de la porte (modèle trouvé sur Internet)
+![img](/img/charniere.JPG)
+
+
+
 ## Application Android
 
 ![img](/img/telephone-app.png)
@@ -45,7 +68,7 @@ Cette [application](app/p9B3i_enviar_recibirRaspBerry3.aia) a été développée
 
  - Se connecter en Bluetooth du téléphone/tablette à l'ordinateur.
  - Cliquer sur le boutton *Start Connect*
-- Cliquer sur *Open door* pour ouvrir la porte du garage et *Close door* pour la fermer
+ - Cliquer sur *Open door* pour ouvrir la porte du garage et *Close door* pour la fermer
  - Il est possible de supprimer et de rajouter des plaques d'immatriculation a la base de données json
  - Cliquer sur *Stop Connect* pour déconnecter l'application
 
