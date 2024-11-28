@@ -2,9 +2,10 @@
 
 ## Module : Capteurs/actionneurs et prototypes
 
-Ce projet implémente un système de gestion automatique de porte de garage basé sur ROS2 et une connection Bluetooth. Il permet de détecter un véhicule, lire sa plaque d'immatriculation, et contrôler l'ouverture/fermeture de la porte de manière automatisée. Le système utilise plusieurs nœuds ROS2 pour gérer la détection de voiture, la lecture de plaque, et la commande du servomoteur pour l’ouverture de la porte. 
+Ce projet implémente un système de gestion automatique de porte de garage basé sur ROS2 et une connection Bluetooth avec une application mobile. Il permet de détecter un véhicule, lire sa plaque d'immatriculation, et contrôler l'ouverture/fermeture de la porte de manière automatisée en fonction de la plaque lue. Une application doit également pouvoir contrôler manuellement la porte et ajouter/supprimer des plaques à autoriser.
+Le système utilise plusieurs nœuds ROS2 pour gérer la détection de voiture, la lecture de plaque, et la commande du servomoteur pour l’ouverture de la porte. 
 
-Présentation PowerPoint disponible [ici](img/Presentation.pptx) 
+Présentation PowerPoint disponible [ici](img/Presentation.pptx).
 
 ## Table des Matières
 
@@ -12,6 +13,7 @@ Présentation PowerPoint disponible [ici](img/Presentation.pptx)
   - [Module : Capteurs/actionneurs et prototypes](#module--capteursactionneurs-et-prototypes)
   - [Table des Matières](#table-des-matières)
   - [Auteurs](#auteurs)
+  - [Maquette](#maquette)
   - [Application Android](#application-android)
   - [Structure des Nœuds](#structure-des-nœuds)
     - [1. BluetoothManager](#1-bluetoothmanager)
@@ -19,6 +21,7 @@ Présentation PowerPoint disponible [ici](img/Presentation.pptx)
     - [3. ServoNode](#3-servonode)
     - [4. ToFNode](#4-tofnode)
     - [5. plate\_reader](#5-plate_reader)
+    - [6. plate\_checker](#6-plate_checker)
     - [Graph](#graph)
   - [Installation](#installation)
     - [Prérequis](#prérequis)
@@ -98,7 +101,7 @@ Lorsqu'un caractère est reçu sur un port série (i.e. lorsqu'une voiture est d
 
 ### 3. ServoNode
 
-Ce nœud contrôle les servos pour ouvrir et fermer la porte. Il souscrit au topic `door_control_command` et effectue l’action suivante :
+Ce nœud contrôle le servomoteur pour ouvrir et fermer la porte. Il souscrit au topic `door_control_command` et effectue l’action suivante :
 - `open` : ouvre la porte en ajustant les angles des servos.
 - `close` : ferme la porte.
 
@@ -106,7 +109,7 @@ Ce nœud publie également un message sur `car_coming_in` lorsque la porte est o
 
 ### 4. ToFNode
 
-Ce nœud utilise un capteur ToF pour détecter si une voiture est complètement stationnée dans le garage. Lorsqu'un véhicule entre (`car_coming_in`), il vérifie la position du véhicule en lisant les données série du capteur ToF jusqu'à ce que le véhicule soit stationné.
+Ce nœud communique via un port série avec l'ESP32 pour activer l'affichage de la distance du véhicule au mur. Lorsque le véhicule est complètement stationné, l'ESP32 renvoie un message pour indiquer au nœud de refermer la porte.
 
 ### 5. plate_reader
 
@@ -145,6 +148,9 @@ pip install -r requirements.txt
 
 ### Exécution
 
+**Téléverser les scripts Arduino** :
+  On doit téléverser les scripts Arduino correspondants dans l'Arduino Uno et l'ESP32, via l'IDE Arduino. Une fois téléversés, il n'est plus nécessaire de téléverser les scripts.
+
 **Lancer launch file ROS2** :
    Lancez manuellement le `launch file` :
 
@@ -153,7 +159,7 @@ pip install -r requirements.txt
    ros2 launch proto_garage launch.py
    ```
 
-  On a configuré la Rapsberry Pi pour que le `launch file` se lance automatiquement à son lancement.
+  On a configuré la Rapsberry Pi pour que le `launch file` et la commande de configuration du bluetooth se lancent automatiquement à son lancement.
 
 ## Fichiers Principaux
 
@@ -164,13 +170,16 @@ pip install -r requirements.txt
 - **`plate_reader.py`** : Lit et extrait la plaque d'immatriculation d'une image via OCR.
 - **`plate_checker.py`** : Vérifie si les plaques lues sont autorisées ou non.
 
+- **`car_detect.ino`** : Script Arduino pour détecter les véhicules, allumer les leds et evoyer un caractère à la Raspberry.
+- **`[a_completer.ino]`** : Script Arduino pour l'ESP32 affichant la distance mesurée par un capteur TOF lorsque qu'un message est reçu, et revoie un messagelorsque la voiture est suffisement proche du mur.
+
 ## Utilisation
 
-Une fois tous les nœuds en cours d'exécution, le système est prêt à gérer automatiquement l'ouverture de la porte de garage. Lorsqu'une voiture est détectée :
+Une fois tous les nœuds en cours d'exécution, le système est prêt à gérer automatiquement l'ouverture de la porte de garage. 
 
-1. La plaque est lue et vérifiée dans le fichier JSON pour vérifier l'accès.
-2. Si l'accès est autorisé, la porte est ouverte.
-3. Le capteur ToF vérifie si la voiture est bien garée et ferme la porte après un délai.
+1. Lorsqu'une voiture s'approche suffisement de la porte, elle est détectée par le télémètre infrarouge, les deux leds s'allument et une image de la voiture est capturée par la Raspberry Pi.
+2. La plaque est lue, et si elle correspond à une plaque autorisée, la porte est ouverte.
+3. Le capteur ToF permet d'afficher la distance de la voiture au mur, et de vérifier si elle est bien garée pour déclencher la fermeture de la porte après un délai.
 
 ## Vidéo
 
