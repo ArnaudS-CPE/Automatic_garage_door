@@ -25,11 +25,11 @@ class ServoNode(Node):
         msgtof=Empty()
         if msg.data=="open":
             self.get_logger().info('Door opening')
-            self.servo.angle = 90
+            self.servo.angle = 0
             self.car_coming_in.publish(msgtof)
         elif msg.data=="close":
             self.get_logger().info('Closing the door')
-            self.servo.angle = 0
+            self.servo.angle = 90
 
 def main(args=None):
     rclpy.init(args=args)
