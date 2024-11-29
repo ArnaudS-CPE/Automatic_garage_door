@@ -171,7 +171,7 @@ pip install -r requirements.txt
 - **`plate_checker.py`** : Vérifie si les plaques lues sont autorisées ou non.
 
 - **`car_detect.ino`** : Script Arduino pour détecter les véhicules, allumer les leds et evoyer un caractère à la Raspberry.
-- **`[a_completer.ino]`** : Script Arduino pour l'ESP32 affichant la distance mesurée par un capteur TOF lorsque qu'un message est reçu, et revoie un messagelorsque la voiture est suffisement proche du mur.
+- **`[sketch_nov7a.ino]`** : Script Arduino pour l'ESP32 affichant la distance mesurée par un capteur TOF lorsque qu'un message est reçu, et revoie un messagelorsque la voiture est suffisement proche du mur.
 
 ## Utilisation
 
