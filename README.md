@@ -183,7 +183,7 @@ Une fois tous les nœuds en cours d'exécution, le système est prêt à gérer 
 
 ## Vidéo
 
-![link]()
+![link](https://youtu.be/g-r0xsHIv3I)
 
 ## Liens utiles
 
